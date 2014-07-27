@@ -1,0 +1,18 @@
+{
+  "name": "bcryptapp",
+  "version": "0.0.0",
+  "description": "bcrypt app using sequelize",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "sequelize": "^1.7.9",
+    "pg": "^3.4.0",
+    "body-parser": "^1.4.3",
+    "bcrypt": "^0.7.8",
+    "express": "^4.7.1"
+  }
+}

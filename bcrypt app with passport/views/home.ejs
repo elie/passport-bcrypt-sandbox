@@ -1,0 +1,11 @@
+<% include partials/header.ejs%>
+
+	<%  if (!isAuthenticated){ %>
+		<a href="/login">Please login again</a>
+	<%  } else {%>
+
+	<h1>Hello, <%= user.username %>	- welcome to our website!</h1>
+	
+	<a href="/logout" class = "btn btn-danger">Log out here</a>
+	<%  }%>
+<% include partials/footer.ejs%>
