@@ -1,10 +1,12 @@
 <% include partials/header.ejs %>  
 <h1> Sign Up Form</h1>
-<p style = "color:red;">
-	<% if(message) {%>
+	
+		<% if(typeof message !== 'undefined') {%>
+		<div class="alert alert-danger">
 		<%= message %>
+		</div>
 		<% }%>
-</p>
+	
 <br>
 <form action="/submit" method = "post">
 	<p>

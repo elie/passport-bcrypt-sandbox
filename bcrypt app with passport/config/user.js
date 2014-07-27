@@ -1,6 +1,7 @@
 var sequelize = require("./db"),
     bcrypt = require("bcrypt"),
     passport = require("passport"),
+    flash = require('connect-flash'),
     passportLocal = require("passport-local");
 
 var salt = bcrypt.genSaltSync(10);
@@ -33,7 +34,13 @@ User.comparePass = function(userpass, dbpass) {
 };
 
 // authenticate our users
-User.authenticate = function(username, password, err, success) {
+passport.use(new passportLocal.Strategy({
+  usernameField: 'username',
+  passwordField: 'password',
+  passReqToCallback : true
+},
+
+function(req, username, password, done) {
 
   // find a user in the DB
 	User.find({
@@ -45,50 +52,18 @@ User.authenticate = function(username, password, err, success) {
     .done(function(error,user){
       if(error){
         console.log(error);
-        err({message: "Oops! Something went wrong"});
+        return done (null, false, req.flash('loginMessage', 'Oops! Something went wrong.'));
       }
-      else if (user === null){
-        err({message: "Username does not exist"});
+      if (!user){
+        return done (null, false, req.flash('loginMessage', 'Username does not exist.'));
       }
-      else if ((User.comparePass(password, user.password)) === true){
-        success();
+      if ((User.comparePass(password, user.password)) !== true){
+        return done (null, false, req.flash('loginMessage', 'Invalid Password'));
       }
-      else {
-        err({message: "Invalid password"});
-      }
+      return done(null, user); 
     });
-};
+}));
 
-// passport function to verify users and set info (TODO: refactor)
-User.verifyCredentials = function(username, password, done) {
-
-  // find a user in the DB
-  User.find({
-      where: {
-        username: username
-      }
-    })
-    // when that's done, 
-    .done(function(error,user){
-      if(error){
-        console.log(error);
-        err({message: "Oops! Something went wrong"});
-      }
-      else if (user === null){
-        err({message: "Username does not exist"});
-      }
-      else if ((User.comparePass(password, user.password)) === true){
-        done(null, {id: user.id, name: user.username}); 
-      }
-      else {
-        err({message: "Invalid password"});
-        done(null, null); 
-      } 
-    });
-};
-
-//create a new strategy for verified users
-passport.use(new passportLocal.Strategy(User.verifyCredentials));
 
 // create a new user with some plain text password validation
 User.createNewUser = function(username, password, err, success ) {

@@ -2,9 +2,11 @@
 
 	<h1> Welcome to our awesome website</h1>
 	<p>
-		<% if(message) {%>
-		<%= message %>
-		<% }%>
+		
+	<% if (typeof message !== 'undefined') { %>
+		<div class="alert alert-success"><%= message %></div>
+	<% } %>
+
 	</p>
 	<a href="/signup" class = "btn btn-primary btn-lg">Sign up</a>
 	&nbsp

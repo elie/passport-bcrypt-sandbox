@@ -2,11 +2,11 @@
 
 	<h1>Login </h1>
 
-	<h2 style = "color:red">
-		<% if(message) {%>
-		<%= message %>
-		<% }%>
-	</h2>
+	
+	<% if (message.length > 0) { %>
+		<div class="alert alert-danger"><%= message %></div>
+	<% } %>
+	
 		<form action="/login" method = "post">
 
 			<p>
